@@ -1,0 +1,19 @@
+### Create Player Adam
+POST {{url}}/players
+Content-Type: application/json
+
+{
+  "email": "adam@email.com",
+  "nickname": "Adam",
+  "password": "1234"
+}
+
+### Create Player Bob
+POST {{url}}/players
+Content-Type: application/json
+
+{
+  "email": "bob@email.com",
+  "nickname": "Bob",
+  "password": "qwerty"
+}
