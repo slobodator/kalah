@@ -1,7 +1,7 @@
 package com.bol.game.kalah.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,11 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "players")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(onlyExplicitlyIncluded = true)
+@Getter
 public class Player implements UserDetails {
     @SuppressWarnings("unused")
     @Id
@@ -25,16 +28,22 @@ public class Player implements UserDetails {
 
     private String email;
 
-    @Getter
     private String password;
 
-    @Nullable
     private String nickname;
 
-    public Player(String email, String password, String nickname) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
+    private Player(String email, String password, String nickname) {
+        this.email = Objects.requireNonNull(email);
+        this.password = Objects.requireNonNull(password);
+        this.nickname = Objects.requireNonNull(nickname);
+    }
+
+    public Player(String email, String nickname) {
+        this(email, "no password", nickname);
+    }
+
+    public static Player newWithPassword(String email, String password, String nickname) {
+        return new Player(email, password, nickname);
     }
 
     @Override

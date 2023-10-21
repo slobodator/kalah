@@ -1,6 +1,6 @@
 package com.bol.game.kalah.service;
 
-import com.bol.game.kalah.controller.PlayerRequest;
+import com.bol.game.kalah.controller.request.PlayerRequest;
 import com.bol.game.kalah.entity.Player;
 import com.bol.game.kalah.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,21 +23,21 @@ public class PlayerService implements UserDetailsService {
     @Transactional
     public void create(PlayerRequest playerRequest) {
         playerRepository
-                .findByEmail(playerRequest.getEmail())
+                .findByEmail(playerRequest.email())
                 .ifPresentOrElse(
                         p -> {
                             throw new ResponseStatusException(
                                     HttpStatus.BAD_REQUEST,
-                                    "User %s already exists".formatted(playerRequest.getEmail())
+                                    "User %s already exists".formatted(playerRequest.email())
                             );
                         },
                         () -> playerRepository.save(
-                                new Player(
-                                        playerRequest.getEmail(),
+                                Player.newWithPassword(
+                                        playerRequest.email(),
                                         passwordEncoder.encode(
-                                                playerRequest.getPassword()
+                                                playerRequest.password()
                                         ),
-                                        playerRequest.getNickname()
+                                        playerRequest.nickname()
                                 )
                         )
                 );

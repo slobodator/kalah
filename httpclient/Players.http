@@ -3,7 +3,7 @@ POST {{url}}/players
 Content-Type: application/json
 
 {
-  "email": "adam@email.com",
+  "email": "adam@bol.com",
   "nickname": "Adam",
   "password": "1234"
 }
@@ -13,7 +13,7 @@ POST {{url}}/players
 Content-Type: application/json
 
 {
-  "email": "bob@email.com",
+  "email": "bob@bol.com",
   "nickname": "Bob",
   "password": "qwerty"
 }

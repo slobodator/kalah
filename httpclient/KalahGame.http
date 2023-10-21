@@ -1,0 +1,15 @@
+### Start new Kalah game
+POST {{url}}/kalah/games
+Content-Type: application/json
+Authorization: Basic adam@bol.com 1234
+
+{
+  "players": [
+    1,
+    2
+  ]
+}
+
+### Get Kalah game
+GET {{url}}/kalah/games/1
+Authorization: Basic bob@bol.com qwerty

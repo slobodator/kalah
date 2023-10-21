@@ -15,19 +15,76 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: email
-                  type: varchar(255)
+                  type: varchar
                   constraints:
                     nullable: false
                     unique: true
                     uniqueConstraintName: uk_players_email
               - column:
                   name: password
-                  type: varchar(255)
+                  type: varchar
                   constraints:
                     nullable: false
               - column:
                   name: nickname
-                  type: varchar(255)
+                  type: varchar
+                  constraints:
+                    nullable: false
         - createSequence:
             sequenceName: players_seq
+            incrementBy: 50
+        - createTable:
+            tableName: kalah_games
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_kalah_games
+              - column:
+                  name: player_1_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    referencedTableName: players
+                    referencedColumnNames: id
+                    foreignKeyName: fk_player_1_kalah_games
+              - column:
+                  name: player_2_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    referencedTableName: players
+                    referencedColumnNames: id
+                    foreignKeyName: fk_player_2_kalah_games
+              - column:
+                  name: player_1_board
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: player_2_board
+                  type: varchar
+                  constraints:
+                    nullable:
+                      false
+              - column:
+                  name: whose_turn_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    referencedTableName: players
+                    referencedColumnNames: id
+                    foreignKeyName: fk_whose_turn_kalah_games
+              - column:
+                  name: winner_id
+                  type: bigint
+                  constraints:
+                    referencedTableName: players
+                    referencedColumnNames: id
+                    foreignKeyName: fk_winner_kalah_games
+        - createSequence:
+            sequenceName: kalah_games_seq
             incrementBy: 50
