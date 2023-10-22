@@ -30,6 +30,7 @@ public class Player implements UserDetails {
 
     private String password;
 
+    @ToString.Include
     private String nickname;
 
     private Player(String email, String password, String nickname) {

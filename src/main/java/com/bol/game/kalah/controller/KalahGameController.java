@@ -1,6 +1,7 @@
 package com.bol.game.kalah.controller;
 
 import com.bol.game.kalah.controller.request.KalahGameRequest;
+import com.bol.game.kalah.controller.request.KalahMoveRequest;
 import com.bol.game.kalah.controller.response.KalahGameDto;
 import com.bol.game.kalah.service.KalahGameService;
 import jakarta.validation.Valid;
@@ -33,6 +34,19 @@ public class KalahGameController {
     ) {
         return kalahGameService.get(
                 id,
+                principal
+        );
+    }
+
+    @PostMapping("/{id}/moves")
+    public KalahGameDto move(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody KalahMoveRequest kalahMoveRequest,
+            Principal principal
+    ) {
+        return kalahGameService.move(
+                id,
+                kalahMoveRequest,
                 principal
         );
     }

@@ -13,3 +13,21 @@ Authorization: Basic adam@bol.com 1234
 ### Get Kalah game
 GET {{url}}/kalah/games/1
 Authorization: Basic bob@bol.com qwerty
+
+### Adam makes a turn
+POST {{url}}/kalah/games/1/moves
+Content-Type: application/json
+Authorization: Basic adam@bol.com 1234
+
+{
+  "pitIndex": 0
+}
+
+### Bob makes a turn
+POST {{url}}/kalah/games/1/moves
+Content-Type: application/json
+Authorization: Basic bob@bol.com qwerty
+
+{
+  "pitIndex": 1
+}

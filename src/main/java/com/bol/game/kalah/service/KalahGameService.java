@@ -1,6 +1,7 @@
 package com.bol.game.kalah.service;
 
 import com.bol.game.kalah.controller.request.KalahGameRequest;
+import com.bol.game.kalah.controller.request.KalahMoveRequest;
 import com.bol.game.kalah.controller.response.KalahGameDto;
 import com.bol.game.kalah.entity.KalahGame;
 import com.bol.game.kalah.entity.Player;
@@ -17,7 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class KalahGameService {
     private final KalahGameRepository kalahGameRepository;
@@ -25,7 +26,6 @@ public class KalahGameService {
 
     private final KalahGameMapper kalahGameMapper;
 
-    @Transactional
     public KalahGameDto create(KalahGameRequest kalahGameRequest, Principal principal) {
         List<Player> players = kalahGameRequest
                 .players()
@@ -52,6 +52,7 @@ public class KalahGameService {
         return kalahGameMapper.toDto(kalahGame, player);
     }
 
+    @Transactional(readOnly = true)
     public KalahGameDto get(Long id, Principal principal) {
         KalahGame kalahGame = kalahGameRepository
                 .findById(id)
@@ -62,6 +63,20 @@ public class KalahGameService {
                         )
                 );
         Player player = playerRepository.findByPrincipal(principal);
+        return kalahGameMapper.toDto(kalahGame, player);
+    }
+
+    public KalahGameDto move(Long id, KalahMoveRequest kalahMoveRequest, Principal principal) {
+        KalahGame kalahGame = kalahGameRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST,
+                                "Kalah Game %d not found".formatted(id)
+                        )
+                );
+        Player player = playerRepository.findByPrincipal(principal);
+        kalahGame.move(kalahMoveRequest.pitIndex(), player);
         return kalahGameMapper.toDto(kalahGame, player);
     }
 }

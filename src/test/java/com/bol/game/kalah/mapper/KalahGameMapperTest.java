@@ -35,9 +35,9 @@ class KalahGameMapperTest {
         assertThat(adamGameDto.iAmWinner())
                 .isNull();
         assertThat(adamGameDto.myTurn())
-                .isEqualTo(true);
+                .isTrue();
         assertThat(adamGameDto.inPlay())
-                .isEqualTo(true);
+                .isTrue();
 
         KalahGameDto bobGameDto = mapper.toDto(kalahGame, bobPlayer);
 
@@ -48,9 +48,8 @@ class KalahGameMapperTest {
         assertThat(bobGameDto.iAmWinner())
                 .isNull();
         assertThat(bobGameDto.myTurn())
-                .isEqualTo(false);
+                .isFalse();
         assertThat(bobGameDto.inPlay())
-                .isEqualTo(true);
-
+                .isTrue();
     }
 }
