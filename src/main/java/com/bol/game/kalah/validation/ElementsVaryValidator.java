@@ -10,7 +10,7 @@ import java.util.Set;
 public class ElementsVaryValidator implements ConstraintValidator<ElementsVary, Collection<?>> {
 
     @Override
-    public boolean isValid(Collection collection, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Collection collection, ConstraintValidatorContext context) {
         return collection.size() == Set.copyOf(collection).size();
     }
 }

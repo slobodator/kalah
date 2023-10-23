@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: players table
+      id: players & kalah games
       author: aslobodyanyk
       changes:
         - createTable:

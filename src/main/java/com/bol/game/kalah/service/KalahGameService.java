@@ -28,7 +28,7 @@ public class KalahGameService {
 
     public KalahGameDto create(KalahGameRequest kalahGameRequest, Principal principal) {
         List<Player> players = kalahGameRequest
-                .players()
+                .playerIds()
                 .stream()
                 .map(
                         id -> playerRepository

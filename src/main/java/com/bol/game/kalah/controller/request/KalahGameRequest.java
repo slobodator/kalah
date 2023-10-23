@@ -10,7 +10,7 @@ public record KalahGameRequest(
         @NotNull
         @Size(min = 2, max = 2)
         @ElementsVary
-        List<Long> players,
+        List<Long> playerIds,
 
         Integer stonesPerPit
 ) {

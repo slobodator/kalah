@@ -70,16 +70,10 @@ public class KalahGame {
 
         this.player1Board = new KalahBoard(stonesPerPit);
         this.player2Board = new KalahBoard(stonesPerPit);
-        this.player1Board.linkTo(player2Board);
     }
 
     public KalahGame(List<Player> players) {
         this(players, DEFAULT_STONES_PER_PIT);
-    }
-
-    @PostLoad
-    public void postLoad() {
-        this.player1Board.linkTo(this.player2Board);
     }
 
     public boolean isInPlay() {
@@ -138,6 +132,8 @@ public class KalahGame {
             );
         }
 
+        this.player1Board.linkTo(player2Board);
+
         if (player.equals(this.player1)) {
             changeTurn(this.player1Board.move(pitIndex));
         } else if (player.equals(this.player2)) {
@@ -158,7 +154,7 @@ public class KalahGame {
 
         if (this.player1Board.isEmpty() || this.player1Board.isEmpty()) {
             log.debug("There are no more stones, the game is ended");
-            this.winner = this.player1Board.gatherAll() > this.player2Board.gatherAll()
+            this.winner = this.player1Board.gatherAllStones() > this.player2Board.gatherAllStones()
                     ? player1
                     : player2;
         }
@@ -170,7 +166,6 @@ public class KalahGame {
     public KalahGame setPosition(KalahBoard player1Board, KalahBoard player2Board) {
         this.player1Board = player1Board;
         this.player2Board = player2Board;
-        this.player1Board.linkTo(player2Board);
         return this;
     }
 }

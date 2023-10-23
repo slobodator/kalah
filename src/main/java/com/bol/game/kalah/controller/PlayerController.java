@@ -16,9 +16,10 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @PostMapping
-    public void create(
+    public String create(
             @Valid @RequestBody PlayerRequest playerRequest
     ) {
         playerService.create(playerRequest);
+        return "Player created";
     }
 }

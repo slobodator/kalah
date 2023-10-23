@@ -21,7 +21,7 @@ public class KalahBoard {
     @ToString.Include
     private final List<Integer> pits = new ArrayList<>();
 
-    private KalahBoard opponentsBoard;
+    private KalahBoard opponentBoard;
 
     public KalahBoard(@Nullable Integer stonesPerPit) {
         pits.addAll(
@@ -51,7 +51,7 @@ public class KalahBoard {
         return new KalahBoard(Arrays.asList(pits));
     }
 
-    public int kalahPit() {
+    public int getStorePit() {
         return pits.get(PITS_AMOUNT);
     }
 
@@ -59,8 +59,8 @@ public class KalahBoard {
      * @return true if the turn is changed
      */
     protected boolean move(int pitIndex) {
-        KalahBoard kalahBoard = this;
-        int stones = kalahBoard.takeFromPit(pitIndex);
+        KalahBoard board = this;
+        int stones = board.pickPitUp(pitIndex);
 
         if (stones == 0) {
             throw new KalahGameException(
@@ -69,40 +69,49 @@ public class KalahBoard {
         }
 
         while (stones > 0) {
+            // next pit
             pitIndex++;
-            if (pitIndex > PITS_AMOUNT) {
-                pitIndex = 0;
-                kalahBoard = kalahBoard.opponentsBoard;
-                log.debug("Move to {}", kalahBoard);
-            }
-            if (kalahBoard.equals(this) || pitIndex < PITS_AMOUNT) {
-                int amount = kalahBoard.increasePit(pitIndex);
-                log.debug("Increasing the {} th pit", pitIndex);
 
-                if (kalahBoard.equals(this) && pitIndex < PITS_AMOUNT && amount == 1 && stones == 1) {
+            // swithces to the opponents board
+            if (pitIndex > PITS_AMOUNT) {
+                board = board.opponentBoard;
+                pitIndex = 0;
+                log.debug("Switches to the opponent board {}", board);
+            }
+
+            // sow a stone to the pit if it not a kalah pit
+            if (board.equals(this) || pitIndex < PITS_AMOUNT) {
+                int amount = board.increasePit(pitIndex);
+
+                // capture the opponent pit
+                if (board.equals(this) && pitIndex < PITS_AMOUNT && amount == 1 && stones == 1) {
+                    int opponentPitIndex = PITS_AMOUNT - pitIndex - 1;
                     this.increasePit(
                             PITS_AMOUNT,
-                            kalahBoard.takeFromPit(pitIndex) +
-                                    kalahBoard.opponentsBoard.takeFromPit(PITS_AMOUNT - pitIndex - 1)
+                            board.pickPitUp(pitIndex) +
+                                    board.opponentBoard.pickPitUp(opponentPitIndex)
                     );
                 }
             }
             stones--;
         }
 
-        return pitIndex != PITS_AMOUNT;
+        @SuppressWarnings("UnnecessaryLocalVariable")
+        boolean myTurn = pitIndex != PITS_AMOUNT;
+        return myTurn;
     }
 
-    private int takeFromPit(int pitIndex) {
+    private int pickPitUp(int pitIndex) {
         int stones = pits.get(pitIndex);
         pits.set(pitIndex, 0);
         log.debug("Take {} stones from the {} th pit", stones, pitIndex);
         return stones;
     }
 
-    private int increasePit(int index, int amount) {
-        int sum = pits.get(index) + amount;
-        pits.set(index, sum);
+    private int increasePit(int pitIndex, int amount) {
+        log.debug("Increasing the {}th pit with {}", pitIndex, amount);
+        int sum = pits.get(pitIndex) + amount;
+        pits.set(pitIndex, sum);
         return sum;
     }
 
@@ -111,9 +120,9 @@ public class KalahBoard {
     }
 
     protected void linkTo(KalahBoard opponentsBoard) {
-        if (this.opponentsBoard == null) {
-            this.opponentsBoard = opponentsBoard;
-            this.opponentsBoard.linkTo(this);
+        if (this.opponentBoard == null) {
+            this.opponentBoard = opponentsBoard;
+            this.opponentBoard.linkTo(this);
         }
     }
 
@@ -124,10 +133,10 @@ public class KalahBoard {
                 .allMatch(p -> p.equals(0));
     }
 
-    protected int gatherAll() {
+    protected int gatherAllStones() {
         int sum = 0;
         for (int i = 0; i < PITS_AMOUNT; i++) {
-            sum += takeFromPit(i);
+            sum += pickPitUp(i);
         }
         this.increasePit(PITS_AMOUNT, sum);
         return sum;

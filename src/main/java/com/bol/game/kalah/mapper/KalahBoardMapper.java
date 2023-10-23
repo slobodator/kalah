@@ -11,16 +11,24 @@ import static com.bol.game.kalah.entity.KalahGame.PITS_AMOUNT;
 
 @Component
 public class KalahBoardMapper {
-    public KalahBoardDto toDto(KalahBoard board, boolean enabled) {
+    public KalahBoardDto toMyBoardDto(KalahBoard board) {
+        return toDto(board, true);
+    }
+
+    public KalahBoardDto toOpponentBoardDto(KalahBoard board) {
+        return toDto(board, false);
+    }
+
+    private KalahBoardDto toDto(KalahBoard board, boolean playable) {
         return new KalahBoardDto(
                 Stream.concat(
                         board
                                 .getPits()
                                 .stream()
                                 .limit(PITS_AMOUNT)
-                                .map(p -> new PitDto(p, true, p > 0 && enabled)),
+                                .map(p -> new PitDto(p, true, p > 0 && playable)),
                         Stream.of(
-                                new PitDto(board.kalahPit(), false, false)
+                                new PitDto(board.getStorePit(), false, false)
                         )
                 ).toList()
         );
