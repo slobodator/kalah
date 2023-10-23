@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Basic adam@bol.com 1234
 
 {
-  "players": [
+  "playerIds": [
     1,
     2
   ]
@@ -12,7 +12,7 @@ Authorization: Basic adam@bol.com 1234
 
 ### Get Kalah game
 GET {{url}}/kalah/games/1
-Authorization: Basic bob@bol.com qwerty
+Authorization: Basic bob@bol.com 4321
 
 ### Adam makes a turn
 POST {{url}}/kalah/games/1/moves
@@ -26,7 +26,7 @@ Authorization: Basic adam@bol.com 1234
 ### Bob makes a turn
 POST {{url}}/kalah/games/1/moves
 Content-Type: application/json
-Authorization: Basic bob@bol.com qwerty
+Authorization: Basic bob@bol.com 4321
 
 {
   "pitIndex": 1

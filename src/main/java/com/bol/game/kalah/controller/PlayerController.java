@@ -1,6 +1,7 @@
 package com.bol.game.kalah.controller;
 
 import com.bol.game.kalah.controller.request.PlayerRequest;
+import com.bol.game.kalah.controller.response.PlayerDto;
 import com.bol.game.kalah.service.PlayerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,9 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @PostMapping
-    public String create(
+    public PlayerDto create(
             @Valid @RequestBody PlayerRequest playerRequest
     ) {
-        playerService.create(playerRequest);
-        return "Player created";
+        return playerService.create(playerRequest);
     }
 }

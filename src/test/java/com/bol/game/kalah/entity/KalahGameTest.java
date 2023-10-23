@@ -121,7 +121,7 @@ class KalahGameTest {
                         .move(0, adamPlayer)
         )
                 .isInstanceOf(KalahGameException.class)
-                .hasMessageContaining("The pit 0 is not allowed for the turn");
+                .hasMessageContaining("The pit 0 is not allowed for the move");
 
     }
 }

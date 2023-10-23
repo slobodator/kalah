@@ -64,7 +64,7 @@ public class KalahBoard {
 
         if (stones == 0) {
             throw new KalahGameException(
-                    "The pit %d is not allowed for the turn".formatted(pitIndex)
+                    "The pit %d is not allowed for the move".formatted(pitIndex)
             );
         }
 
