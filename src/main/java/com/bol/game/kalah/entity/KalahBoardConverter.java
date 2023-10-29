@@ -15,6 +15,7 @@ public class KalahBoardConverter implements AttributeConverter<KalahBoard, Strin
         return kalahBoard
                 .getPits()
                 .stream()
+                .map(KalahPit::getStones)
                 .map(String::valueOf)
                 .collect(Collectors.joining(DELIMITER));
     }
